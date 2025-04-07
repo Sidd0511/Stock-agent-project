@@ -51,12 +51,3 @@ License
 MIT License
 
 ---
-
-### Add it to Your Codespace
-Run this in your Codespaces terminal:
-```bash
-touch README.md
-
-Then paste the content above into the file.
-
-Let me know once you’re ready, and we’ll jump back to building the model.
