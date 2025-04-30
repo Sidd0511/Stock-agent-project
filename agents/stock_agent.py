@@ -3,6 +3,56 @@ from tools.stock_price_api import get_multiple_stock_prices
 from typing import List, Dict
 
 
+
+def track_stock_prices_tool(symbols: List[str]) -> Dict[str, float]:
+    """
+    Fetch the latest stock prices for a list of stock symbols.
+
+    This function uses an external API to retrieve stock prices for the provided symbols.
+    It logs information about successfully fetched prices and warnings for any symbols
+    that could not be fetched.
+
+    Args:
+        symbols (List[str]): A list of stock symbols to fetch prices for.
+
+    Returns:
+        Dict[str, float]: A dictionary containing:
+            - "prices": A dictionary of stock symbols and their corresponding prices.
+            - "failed": A list of stock symbols for which prices could not be fetched.
+    """
+    # Fetch prices and failed symbols
+    prices, failed = get_multiple_stock_prices(symbols)
+
+    # Log fetched prices
+    if prices:
+        print(f"[INFO] Fetched stock prices: {list(prices.keys())}")
+
+    # Log failed symbols
+    if failed:
+        print(f"[WARNING] Could not fetch prices for: {failed}")
+
+    # Return the results
+    return {
+        "prices": prices,
+        "failed": failed
+    }
+
+
+# Define the stock agent
+stock_agent = Agent(
+    role="Stock Tracker",
+    goal="Monitor stock symbols and report real-time prices.",
+    backstory=(
+        "You are a real-time financial data analyst specializing in stock tracking. "
+        "Your task is to provide accurate and up-to-date stock price information."
+    ),
+    allow_delegation=False,
+    verbose=True,
+    tools=[track_stock_prices_tool]
+)
+
+# ===================== Without CrewAI =====================
+# 
 # class StockTrackerAgent:
 #     """
 #     A class to represent a stock tracking agent.
@@ -47,43 +97,3 @@ from typing import List, Dict
 #             "prices": prices,
 #             "failed": failed
 #         }
-
-
-def track_stock_prices_tool(symbols: List[str]) -> Dict[str, float]:
-    """
-    Fetch the latest stock prices for a list of stock symbols.
-
-    This function uses an external API to retrieve stock prices for the provided symbols.
-    It logs information about successfully fetched prices and warnings for any symbols
-    that could not be fetched.
-
-    Args:
-        symbols (List[str]): A list of stock symbols to fetch prices for.
-
-    Returns:
-        Dict[str, float]: A dictionary containing:
-            - "prices": A dictionary of stock symbols and their corresponding prices.
-            - "failed": A list of stock symbols for which prices could not be fetched.
-    """
-    prices, failed = get_multiple_stock_prices(symbols)
-
-    if prices:
-        print(f"[INFO] Fetched stock prices: {list(prices.keys())}")
-    if failed:
-        print(f"[WARNING] Could not fetch prices for: {failed}")
-
-    return {
-        "prices": prices,
-        "failed": failed
-    }
-
-
-stock_agent = Agent(
-    role = "Stock Tracker"
-    goal = "Monitor stock symbols and report real-time prices.",
-    backstory= "You are a real-time financial data analyst specializing in stock tracking.",
-    allow_delegation= False
-    verbose= True,
-    tools = [track_stock_prices_tool]
-)
-

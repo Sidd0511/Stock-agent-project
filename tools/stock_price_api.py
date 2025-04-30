@@ -49,5 +49,3 @@ def get_multiple_stock_prices(symbols: List[str]) -> Tuple[Dict[str, float], Lis
             failed_symbols.append(symbol)
         
     return prices, failed_symbols
-
-def get_single_metal_price()

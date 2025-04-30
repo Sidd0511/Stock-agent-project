@@ -1,2 +1,8 @@
 pydantic
 yfinance
+crewai
+langchain
+requests
+pandas
+numpy
+sqlalchemy
