@@ -4,7 +4,7 @@ from models.context import AssetContext
 DIRECTION_INCREASE = "increase"
 DIRECTION_DECREASE = "decrease"
 
-def check_thresholds(contexts: List[AssetContext]) -> List[AssetContext]:
+def check_thresholds(assets: List[AssetContext]) -> List[AssetContext]:
     
     for asset in assets:
         change = asset.current_price - asset.reference_price
@@ -14,13 +14,13 @@ def check_thresholds(contexts: List[AssetContext]) -> List[AssetContext]:
         elif asset.threshold_type == "absolute":
             evaluate_threshold(asset, change, is_percent=False)
 
-    return contexts
+    return assets
 
 def evaluate_threshold(asset: AssetContext, change: float, is_percent: bool):
 
     if is_percent:
         raw_value = (change/asset.reference_price)*100
-        formatted_value = f"{abs{raw_value}:.2f}%"
+        formatted_value = f"{abs(raw_value):.2f}%"
     else:
         raw_value = change
         formatted_value = f"{abs(raw_value):.2f}"
